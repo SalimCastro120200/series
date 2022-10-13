@@ -15,7 +15,7 @@ class MediaListItem extends StatelessWidget {
           Container(
               child: new Stack(children: <Widget>[
             new FadeInImage.assetNetwork(
-              placeholder: "assets/placeholder.jpg",
+              placeholder: "assets/images/load.png",
               image: media.getBackDropUrl(),
               fit: BoxFit.cover,
               width: double.infinity,
@@ -34,7 +34,7 @@ class MediaListItem extends StatelessWidget {
             ),
             new Positioned(
               left: 10.0,
-              bottom: 30.0,
+              bottom: 10.0,
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -42,14 +42,43 @@ class MediaListItem extends StatelessWidget {
                     child: new Text(
                       media.title,
                       style: new TextStyle(
-                          fontFamily: "Alfa",
-                          // fontWeight: FontWeight.bold,
-                          // fontStyle: ,
-                          color: Colors.white),
+                          fontFamily: "Alfa", color: Colors.white),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                   ),
                   new Container(
-                    child: new Text(media.getGenres()),
+                    width: 280.0,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 5.0),
+                      child: new Text(
+                        media.getGenres(),
+                        style: TextStyle(fontFamily: "PT"),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            new Positioned(
+              right: 10.0,
+              bottom: 10.0,
+              child: new Column(
+                children: <Widget>[
+                  new Row(
+                    children: <Widget>[
+                      new Text(media.voteAverage.toString()),
+                      new Container(
+                        width: 5.0,
+                      ),
+                      new Icon(
+                        Icons.star,
+                        size: 18,
+                        color: Colors.lime[900],
+                      )
+                    ],
                   )
                 ],
               ),
