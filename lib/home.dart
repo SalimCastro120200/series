@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:movie_app/media_list.dart';
+import 'package:movie_app/common/MediaProvider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -9,16 +12,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _loadJson();
-  // }
+  final MediaProvider movieProvider = new MoviesProvider();
+  final MediaProvider serieProvider = new SeriesProvider();
 
-  // _loadJson() async {
-  //   String data = await HttpHandler().fetchMovies();
-  //   print(data);
-  // }
+  MediaType mediaType = MediaType.movie;
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +42,24 @@ class _HomeState extends State<Home> {
           new DrawerHeader(child: new Material()),
           new ListTile(
             title: new Text("Peliculas"),
+            selected: mediaType == MediaType.movie,
             trailing: new Icon(Icons.local_movies),
+            onTap: () {
+              _changeMediaType(MediaType.movie);
+              Navigator.of(context).pop;
+            },
           ),
           new Divider(
             height: 5.0,
           ),
           new ListTile(
             title: new Text("Televisión"),
+            selected: mediaType == MediaType.serie,
             trailing: new Icon(Icons.live_tv),
+            onTap: () {
+              _changeMediaType(MediaType.serie);
+              Navigator.of(context).pop;
+            },
           ),
           new Divider(
             height: 5.0,
@@ -82,5 +89,13 @@ class _HomeState extends State<Home> {
       new BottomNavigationBarItem(
           icon: Icon(Icons.star), label: ("Mejor Valoradas")),
     ];
+  }
+
+  void _changeMediaType(MediaType type) {
+    if (mediaType != type) {
+      setState(() {
+        mediaType = type;
+      });
+    }
   }
 }

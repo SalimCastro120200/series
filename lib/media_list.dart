@@ -13,23 +13,23 @@ class _MediaListState extends State<MediaList> {
   @override
   void initState() {
     super.initState();
-    // loadMovie();
-    loadSeries();
+    loadMovie();
+    // loadSeries();
   }
 
-  // void loadMovie() async {
-  //   var movies = await HttpHandler().fetchMovies();
-  //   setState(() {
-  //     _media.addAll(movies);
-  //   });
-  // }
-
-  void loadSeries() async {
-    var series = await HttpHandler().fetchSeries();
+  void loadMovie() async {
+    var movies = await HttpHandler().fetchMovies();
     setState(() {
-      _media.addAll(series);
+      _media.addAll(movies);
     });
   }
+
+  // void loadSeries() async {
+  //   var series = await HttpHandler().fetchSeries();
+  //   setState(() {
+  //     _media.addAll(series);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
