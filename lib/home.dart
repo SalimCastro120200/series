@@ -1,8 +1,8 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:movie_app/media_list.dart';
 import 'package:movie_app/common/MediaProvider.dart';
+import 'package:movie_app/model/Media.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -12,9 +12,22 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    _pageController = new PageController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pageController?.dispose();
+    super.dispose();
+  }
+
   final MediaProvider movieProvider = new MoviesProvider();
   final MediaProvider serieProvider = new SeriesProvider();
-
+  PageController? _pageController;
+  int _page = 0;
   MediaType mediaType = MediaType.movie;
 
   @override
@@ -72,10 +85,18 @@ class _HomeState extends State<Home> {
         ],
       )),
       body: new PageView(
-        children: <Widget>[new MediaList()],
+        children: _getMediaList(mediaType),
+        controller: _pageController,
+        onPageChanged: (int index) {
+          setState(() {
+            _page = index;
+          });
+        },
       ),
       bottomNavigationBar: new BottomNavigationBar(
         items: _getFooterItems(),
+        onTap: _navigationTapped,
+        currentIndex: _page,
       ),
     );
   }
@@ -97,5 +118,24 @@ class _HomeState extends State<Home> {
         mediaType = type;
       });
     }
+  }
+
+  List<Widget> _getMediaList(MediaType mediaType) {
+    return (mediaType == MediaType.movie)
+        ? <Widget>[
+            new MediaList(movieProvider, "popular"),
+            new MediaList(movieProvider, "upcoming"),
+            new MediaList(movieProvider, "top_rated")
+          ]
+        : <Widget>[
+            new MediaList(serieProvider, "popular"),
+            new MediaList(serieProvider, "on_the_air"),
+            new MediaList(serieProvider, "top_rated")
+          ];
+  }
+
+  void _navigationTapped(int page) {
+    _pageController?.animateToPage(page,
+        duration: const Duration(milliseconds: 300), curve: Curves.ease);
   }
 }

@@ -8,7 +8,7 @@ import 'package:movie_app/model/Media.dart';
 class HttpHandler {
   static final _httpHandler = new HttpHandler();
   final String _baseUrl = "api.themoviedb.org";
-  final String _languaje = "fr-FR";
+  final String _languaje = "es-MX";
 
   static HttpHandler get() {
     return _httpHandler;
@@ -19,8 +19,8 @@ class HttpHandler {
     return json.decode(response.body);
   }
 
-  Future<List<Media>> fetchMovies() {
-    var uri = new Uri.https(_baseUrl, "3/movie/popular",
+  Future<List<Media>> fetchMovies({String? category}) async {
+    var uri = new Uri.https(_baseUrl, "3/movie/$category",
         {'api_key': API_KEY, 'page': "1", 'language': _languaje});
 
     return getJson(uri).then(((data) => data['results']
@@ -28,8 +28,8 @@ class HttpHandler {
         .toList()));
   }
 
-  Future<List<Media>> fetchSeries() {
-    var uri = new Uri.https(_baseUrl, "3/tv/popular",
+  Future<List<Media>> fetchSeries({String? category}) async {
+    var uri = new Uri.https(_baseUrl, "3/tv/$category",
         {'api_key': API_KEY, 'page': "1", 'language': _languaje});
 
     return getJson(uri).then(((data) => data['results']
